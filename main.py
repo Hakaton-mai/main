@@ -35,7 +35,7 @@ def main():
     clickhouse_table = "test_table"
 
     # Настройка логирования
-    logger.add("rabbitmq_to_clickhouse.log", rotation="10 MB", level="INFO", retention="10 days")
+    logger.add("main.log", rotation="10 MB", level="INFO", retention="10 days")
 
     # Инициализация клиентов
     logger.info("Инициализация клиентов RabbitMQ и ClickHouse.")

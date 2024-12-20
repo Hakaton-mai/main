@@ -9,3 +9,5 @@ rad.json
 *.flf
 __pycache__/l
 .venv/
+*.log
+.idea
