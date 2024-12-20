@@ -1,0 +1,8 @@
+2024-12-20 17:50:49.238 | INFO     | __main__:main:41 - Инициализация клиентов RabbitMQ и ClickHouse.
+2024-12-20 17:51:16.778 | INFO     | __main__:main:41 - Инициализация клиентов RabbitMQ и ClickHouse.
+2024-12-20 17:59:38.532 | INFO     | __main__:main:41 - Инициализация клиентов RabbitMQ и ClickHouse.
+2024-12-20 18:01:05.012 | INFO     | __main__:main:41 - Инициализация клиентов RabbitMQ и ClickHouse.
+2024-12-20 18:01:05.088 | INFO     | rabbit:connect:25 - Подключение к RabbitMQ (localhost) успешно установлено.
+2024-12-20 18:01:05.089 | INFO     | rabbit:consume:34 - Ожидание сообщений из очереди: test. Нажмите Ctrl+C для выхода.
+2024-12-20 18:01:05.100 | INFO     | __main__:process_message:12 - Получено сообщение из RabbitMQ
+2024-12-20 18:01:09.573 | ERROR    | __main__:process_message:21 - Ошибка декодирования JSON: Expecting value: line 1 column 1 (char 0)
