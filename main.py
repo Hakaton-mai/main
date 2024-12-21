@@ -1,8 +1,9 @@
-import json
+import ujson
 from loguru import logger
 from click_house import ClickHouseClient
 from rabbit import RabbitMQConsumer
-from gpt import giga_chat_request
+from gpt import giga_chat_request, giga_chat_request_mock
+
 
 def process_message(body, clickhouse_client):
     """
@@ -10,14 +11,15 @@ def process_message(body, clickhouse_client):
     """
     try:
         logger.info(f"Получено сообщение из RabbitMQ")
-
-        message = json.loads(body)  # Декодируем JSON
+        logger.info(body)
+        message = ujson.loads(body)  # Декодируем JSON
         response = giga_chat_request(message['msg']) #TODO: заменить
-        response = json.loads(response)
+        print(response)
+        response = ujson.loads(response.replace('json', '').replace('```', ''))
 
         clickhouse_client.insert_data(response)
 
-    except json.JSONDecodeError as e:
+    except ujson.JSONDecodeError as e:
         logger.error(f"Ошибка декодирования JSON: {e}")
     except Exception as e:
         logger.error(f"Ошибка обработки сообщения: {e}")
@@ -30,7 +32,7 @@ def main():
     rabbitmq_host = "localhost"
     queue_name = "test"
 
-    clickhouse_host = "http://localhost"
+    clickhouse_host = "localhost"
     clickhouse_database = "mydb"
     clickhouse_table = "test_table"
 

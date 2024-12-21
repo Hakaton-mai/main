@@ -1,17 +1,17 @@
 import json
 import clickhouse_connect
 from loguru import logger
-
+import uuid
 
 class ClickHouseClient:
     """
     Класс для отправки данных в ClickHouse.
     """
     def __init__(self, host, database, table):
-        self.client = None #clickhouse_connect.get_client(host=host)
+        self.client = clickhouse_connect.get_client(host=host)
         self.database = database
         self.table = table
-        # self.ensure_table()
+        self.ensure_table()
 
     def ensure_table(self):
         """
@@ -21,11 +21,10 @@ class ClickHouseClient:
             self.client.command(f"CREATE DATABASE IF NOT EXISTS {self.database}")
             self.client.command(f"""
                 CREATE TABLE IF NOT EXISTS {self.database}.{self.table} (
-                    id UInt64,
+                    id String,
                     category String,
                     subcategory String,
-                    reason String,
-                    time_stamp DateTime
+                    reason String
                 ) ENGINE = MergeTree()
                 ORDER BY id
             """)
@@ -40,15 +39,15 @@ class ClickHouseClient:
         """
         try:
             # Форматируем данные под таблицу
-            formatted_data = {
-                'id': data.get('id'),
-                'category': data.get('category'),
-                'subcategory': data.get('subcategory'),
-                'reason': data.get('reason'),
-                'time_stamp': data.get('time_stamp')
-            }
-            self.client.insert(self.table, [formatted_data])
+            formatted_data = [
+                str(uuid.uuid4()),  # Генерация уникального id
+                data.get('category'),
+                data.get('subcategory'),
+                data.get('reason')
+            ]
+            self.client.insert(f"{self.database}.{self.table}", [formatted_data])
             logger.info(f"Данные успешно вставлены в ClickHouse: {formatted_data}")
         except Exception as e:
             logger.error(f"Ошибка вставки данных в ClickHouse: {e}")
             raise
+

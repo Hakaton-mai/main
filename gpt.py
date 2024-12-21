@@ -53,3 +53,14 @@ def giga_chat_request(msg: str):
     ]
     answer = giga(msgs)
     return answer.content
+def giga_chat_request_mock(msg: str):
+    return """
+    ```json
+{
+  "category": "Претензия",
+  "subcategory": "Нефинансовая",
+  "reason": "Технический сбой",
+  "ix": 5
+}
+```
+    """
