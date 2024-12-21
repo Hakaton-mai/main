@@ -3,7 +3,7 @@ from loguru import logger
 from click_house import ClickHouseClient
 from rabbit import RabbitMQConsumer
 from gpt import giga_chat_request, giga_chat_request_mock
-
+from reviews_controller import reviews_controller
 
 def process_message(body, clickhouse_client):
     """
@@ -49,6 +49,9 @@ def main():
 
     # Обработка сообщений
     rabbitmq_consumer.consume(lambda ch, method, properties, body: process_message(body, clickhouse_client))
+    app = Flask(__name__)
+    app.register_blueprint(reviews_controller)
+    app.run(host='0.0.0.0', port=8080)
 
 
 if __name__ == "__main__":
